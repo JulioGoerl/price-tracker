@@ -30,7 +30,6 @@ def main():
 
         print(f"\nProduto: {titulo}")
         print(f"Preço atual: £{preco:.2f}")
-        print(f"Monitorado {quantidade} vezes")
 
         if preco_anterior is None:
             print("Primeira vez monitorando esse produto")
@@ -53,6 +52,8 @@ def main():
             titulo,
             preco
         )
+
+        print(f"Monitorado {quantidade} vezes")
 
         historico = historico_produto(titulo)
 
