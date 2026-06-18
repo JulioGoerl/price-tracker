@@ -7,51 +7,54 @@ from database import (
     listar_historico
 )
 
-URL = (
-    "https://books.toscrape.com/"
-    "catalogue/"
-    "a-light-in-the-attic_1000/"
-    "index.html"
-)
+URLS = [
+    "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html",
+    "https://books.toscrape.com/catalogue/the-nicomachean-ethics_75/index.html",
+    "https://books.toscrape.com/catalogue/the-little-prince_72/index.html"
+]
 
 
 def main():
 
     criar_banco()
 
-    titulo, preco = obter_produto(URL)
+    data_atual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    preco_anterior = ultimo_preco(titulo)
+    for url in URLS:
+        titulo, preco = obter_produto(url)
 
-    print(f"\nProduto: {titulo}")
-    print(f"Preço atual: £{preco:.2f}")
+        preco_anterior = ultimo_preco(titulo)
 
-    if preco_anterior is None:
-        print("Primeira vez monitorando esse produto")
+        print(f"\nProduto: {titulo}")
+        print(f"Preço atual: £{preco:.2f}")
 
-    elif preco < preco_anterior:
-        print(f"Preço anterior: £{preco_anterior:.2f}")
-        print("O preço caiu!")
+        if preco_anterior is None:
+            print("Primeira vez monitorando esse produto")
 
-    elif preco > preco_anterior:
-        print(f"Preço anterior: £{preco_anterior:.2f}")
-        print("O preço aumentou!")
+        elif preco < preco_anterior:
+            print(f"Preço anterior: £{preco_anterior:.2f}")
+            print("O preço caiu!")
 
-    else:
-        print(f"Preço anterior: £{preco_anterior:.2f}")
-        print("️O preço não mudou.")
+        elif preco > preco_anterior:
+            print(f"Preço anterior: £{preco_anterior:.2f}")
+            print("O preço aumentou!")
 
-    salvar_produto(
-        datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        titulo,
-        preco
-    )
+        else:
+            print(f"Preço anterior: £{preco_anterior:.2f}")
+            print("️O preço não mudou.")
+
+
+        salvar_produto(
+            data_atual,
+            titulo,
+            preco
+        )
+
+        print("\nHistórico:")
+
+        for data, titulo, preco in listar_historico():
+            print(f"{data} | {titulo} | £{preco:.2f}")
 
 
 if __name__ == "__main__":
     main()
-
-print("\nHistórico:")
-
-for data, titulo, preco in listar_historico():
-    print(f"{data} | {titulo} | £{preco:.2f}")
