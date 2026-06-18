@@ -4,7 +4,8 @@ from database import (
     criar_banco,
     salvar_produto,
     ultimo_preco,
-    listar_historico
+    historico_produto,
+    quantidade_registros
 )
 
 URLS = [
@@ -25,8 +26,11 @@ def main():
 
         preco_anterior = ultimo_preco(titulo)
 
+        quantidade = quantidade_registros(titulo)
+
         print(f"\nProduto: {titulo}")
         print(f"Preço atual: £{preco:.2f}")
+        print(f"Monitorado {quantidade} vezes")
 
         if preco_anterior is None:
             print("Primeira vez monitorando esse produto")
@@ -50,10 +54,12 @@ def main():
             preco
         )
 
-        print("\nHistórico:")
+        historico = historico_produto(titulo)
 
-        for data, titulo, preco in listar_historico():
-            print(f"{data} | {titulo} | £{preco:.2f}")
+        print("\nÚltimos preços:")
+
+        for data, preco in historico:
+            print(f"{data} -> £{preco:.2f}")
 
 
 if __name__ == "__main__":

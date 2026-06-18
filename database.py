@@ -56,19 +56,38 @@ def ultimo_preco(titulo):
     return resultado[0]
 
 
-def listar_historico():
+def historico_produto(titulo):
     conn = sqlite3.connect("precos.db")
 
     cursor = conn.cursor()
 
     cursor.execute("""
-    SELECT data, titulo, preco
+    SELECT data, preco
     FROM historico
+    WHERE titulo = ?
     ORDER BY id DESC
-    """)
+    LIMIT 5
+    """, (titulo,))
 
     dados = cursor.fetchall()
 
     conn.close()
 
     return dados
+
+def quantidade_registros(titulo):
+    conn = sqlite3.connect("precos.db")
+
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT COUNT(*)
+    FROM historico
+    WHERE titulo = ?
+    """, (titulo,))
+
+    resultado = cursor.fetchone()
+
+    conn.close()
+
+    return resultado[0]
