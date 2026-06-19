@@ -36,7 +36,7 @@ price-tracker/
 Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/price-tracker.git
+git clone https://github.com/JulioGoerl/price-tracker.git
 cd price-tracker
 ```
 
